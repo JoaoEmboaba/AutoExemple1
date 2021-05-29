@@ -24,11 +24,11 @@ class XboxController : public : GenericHID {
 
   XboxController & operator=(XboxController&&) = default;
 
-   double GetX(JoystickHand hand) const override;
+   float GetX(JoystickHand hand) const override;
   
-   double GetY(JoystickHand hand) const override;
+   float GetY(JoystickHand hand) const override;
   
-   double GetTriggerAxis(JoystickHand hand) const;
+   float GetTriggerAxis(JoystickHand hand) const;
   
    bool GetBumper(JoystickHand hand) const;
   
