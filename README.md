@@ -1,117 +1,54 @@
-// # AutoExemple1
-// Projeto usado como exemplo para a navegação do robô da FRC, tendo um loop autônomo e comandos para a conexão do joystick
-
-
-
-#include <frc/Joystick.h> //Library for the controls
-#include <frc/PWMSparkMax.h> //Control the motors
-#include <frc/TimedRobot.h> //Library to the test
-#include <frc/Timer.h> //Used to Autonomous circuit
-#include <frc/XboxController.h> // Connect the joystick on the Victor
+#include <frc/Joystick.h> // Biblioteca para os controles.
+#include <frc/PWMSparkMax.h> // Controla os motores(Victors).
+#include <frc/TimedRobot.h> // Biblioteca para teste.
+#include <frc/Timer.h> // Usado para o circuito autônomo.
+#include <frc/drive/DifferentialDrive.h> //   Conecta o controle nos Victors.
 #include <frc/livewindow/LiveWindow.h>
-#include "frc/GenericHID.h"
-namespace frc {
-#include <iostream> // bah, we're all tired of know
+#include <iostream> //  bah, tão cansados de saber né?
 using namespace std;
-
-
-class XboxController : public : GenericHID {
+class Robot : public frc::TimedRobot {
  public:
-  
-  explicit XboxControlle(int port);  
+  Robot() {
+    m_robotDrive.SetExpiration(0.1);
+    m_timer.Start();
+  }
 
-  ~XboxController(XboxController&&) = default;
-
-  XboxController & operator=(XboxController&&) = default;
-
-   float GetX(JoystickHand hand) const override;
-  
-   float GetY(JoystickHand hand) const override;
-  
-   float GetTriggerAxis(JoystickHand hand) const;
-  
-   bool GetBumper(JoystickHand hand) const;
-  
-   bool GetBumperPressed(JoystickHand hand);
-  
-   bool GetBumperReleased(JoystickHand hand);
-  
-   bool GetStickButton(JoystickHand hand) const;
-  
-   bool GetStickButtonPressed(JoystickHand hand);
-  
-   bool GetStickButtonReleased(JoystickHand hand);
-  
-   bool GetAButton() const;
-  
-   bool GetAButtonPressed();
-  
-   bool GetAButtonReleased();
-  
-   bool GetBButton() const;
-  
-   bool GetBButtonPressed();
-  
-   bool GetBButtonReleased();
-  
-   bool GetXButton() const;
-  
-   bool GetXButtonPressed();
-  
-   bool GetXButtonReleased();
-  
-   bool GetYButton() const;
-  
-   bool GetYButtonPressed();
-  
-   bool GetYButtonReleased();
-  
-   bool GetBackButton() const;
-  
-   bool GetBackButtonPressed();
-  
-   bool GetBackButtonReleased();
-  
-   bool GetStartButton() const;
-  
-   bool GetStartButtonPressed();
-  
-   bool GetStartButtonReleased();
-
-   enum class Button {
-     kBumperLeft = 5,
-     kBumperRight = 6,
-     kStickLeft = 9,
-     kStickRight = 10,
-     kA = 1,
-     kB = 2,
-     kX = 3,
-     kY = 4,
-     kBack = 7,
-     kStart = 8
-   };
-  
-   enum class Axis {
-     kLeftX = 0,
-     kRightX = 4,
-     kLeftY = 1,
-     kRightY = 5,
-     kLeftTrigger = 2,
-     kRightTrigger = 3
-   };
- };
-  
   void AutonomousInit() override {
     m_timer.Reset();
     m_timer.Start();
   }
 
   void AutonomousPeriodic() override {
-    // Drive for 2 seconds
-    cout << "TechMakerRobotics\n" << endl;
-    if (m_timer.Get() <= 5.0) {      
-      // Drive forwards half speed
-      m_robotDrive.ArcadeDrive(0.5, 0.0);
+    cout << "TechMakerRobotics" << endl;
+    if (m_timer.Get() <= 3.0) {             
+    m_robotDrive.ArcadeDrive(0.45, 0.0);
+      else if (m_timer.Get() <= 4.0) {
+      m_robotDrive.ArcadeDrive(0.0, 0.35);
+      else if (m_timer.Get() <= 5.0) {
+      m_robotDrive.ArcadeDrive(0.45, 0.0);
+      else if (m_timer.Get() <= 6.0) {
+      m_robotDrive.ArcadeDrive(0.0, -0.35);
+      else if (m_timer.Get() <= 7.0) {
+      m_robotDrive.ArcadeDrive(0.45, 0.0);
+      else if (m_time.Get() <= 8.0) {
+        m_robotDrive.ArcadeDrive(0.0, 0.35);
+        else if (m_time.Get() <= 9.0) {
+          m_robotDrive.ArcadeDrive(0.45, 0.0);
+          else if (m_timer.Get() <= 10.0) {
+            m_robotDrive.ArcadeDrive(0.0, -0.35);
+            else if (m_timer.Get() <= 11.0) {
+              m_robotDrive.ArcadeDrive (0.45, 0.0);
+              else if (m_timer.Get() <= 12.0) {
+                m_robotDrive.ArcadeDrive (0.45, 0.55);
+              }
+            }
+          }
+        }
+       }
+      
+      return 1;
+    }
+ }    
     } else {
       // Stop robot
       m_robotDrive.ArcadeDrive(-0.5, 0.0);
@@ -125,7 +62,8 @@ class XboxController : public : GenericHID {
   void TeleopInit() override {}
 
   void TeleopPeriodic() override {
-
+    // Drive with arcade style (use right stick)
+    m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
   }
 
   void TestInit() override {}
@@ -133,7 +71,12 @@ class XboxController : public : GenericHID {
   void TestPeriodic() override {}
 
  private:
+  // Robot drive system
+  frc::PWMSparkMax m_left{0};
+  frc::PWMSparkMax m_right{1};
+  frc::DifferentialDrive m_robotDrive{m_left, m_right};
 
+  frc::Joystick m_stick{0};
   frc::LiveWindow& m_lw = *frc::LiveWindow::GetInstance();
   frc::Timer m_timer;
 };
