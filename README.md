@@ -9,15 +9,12 @@
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/livewindow/LiveWindow.h>
 #include <frc2/command/SubsystemBase.h>
-#include "ctre/Phoenix.h"
+#include "ctre/phoenix.h"
 #include <frc/SpeedControllerGroup.h>
 
 class Robot : public frc::TimedRobot {
-  frc::PWMSparkMax m_leftMotor{4};
-  frc::PWMSparkMax m_rightMotor{5};
-  frc::DifferentialDrive m_robotDrive{m_leftMotor, m_rightMotor};
-  frc::XboxController m_driverController{0};
   
+  public:
   
   double rAccel = 0, lAccel = 0;
   Robot()
@@ -41,10 +38,10 @@ class Robot : public frc::TimedRobot {
       m_shooterMiddle.Set(1.0);
     }
     else{
-    m_robotDrive.ArcadeDrive(0.0, 0.0);
-    m_shooterLeft.Set(0);
-    m_shooterRight.Set(0);
-    m_shooterMiddle.Set(0);
+      m_robotDrive.ArcadeDrive(0.0, 0.0);
+      m_shooterLeft.Set(0);
+      m_shooterRight.Set(0);
+      m_shooterMiddle.Set(0);
     }
   }
 
@@ -64,7 +61,6 @@ class Robot : public frc::TimedRobot {
         m_driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand),
         m_driverController.GetX(frc::GenericHID::JoystickHand::kRightHand));
   }
-};
       
 
   void TestInit() override {}
@@ -85,6 +81,9 @@ private:
   frc::SpeedControllerGroup m_right{m_frontRight, m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_right,m_left};
 
+  WPI_VictorSPX m_leftMotor{4};
+  WPI_VictorSPX m_rightMotor{5};
+  frc::XboxController m_driverController{0};
   frc::GenericHID::JoystickHand lHand = frc::GenericHID::kLeftHand;
   frc::GenericHID::JoystickHand rHand = frc::GenericHID::kRightHand;
 
