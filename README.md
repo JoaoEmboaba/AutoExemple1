@@ -81,8 +81,8 @@ private:
   frc::SpeedControllerGroup m_right{m_frontRight, m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_right,m_left};
 
-  WPI_VictorSPX m_leftMotor{4};
-  WPI_VictorSPX m_rightMotor{5};
+  WPI_VictorSPX m_leftMotor{1};
+  WPI_VictorSPX m_rightMotor{2};
   frc::XboxController m_driverController{0};
   frc::GenericHID::JoystickHand lHand = frc::GenericHID::kLeftHand;
   frc::GenericHID::JoystickHand rHand = frc::GenericHID::kRightHand;
