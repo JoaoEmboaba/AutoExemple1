@@ -30,14 +30,18 @@ class Robot : public frc::TimedRobot {
 
   void AutonomousPeriodic() override
   {
-    if (m_timer.Get() < 5.0)
+    if (m_timer.Get() < 6.0)
     {
-      m_robotDrive.ArcadeDrive(0.45, 0.0);
+      m_robotDrive.ArcadeDrive(-0.45, 0.0 );
       m_shooterLeft.Set(1.0);
       m_shooterRight.Set(1.0);
       m_shooterMiddle.Set(1.0);
+    }else if (m_timer.Get () < 7.0) {
+      m_robotDrive.ArcadeDrive(0.0, 0.75); 
+    } else if (m_timer.Get () < 13.0) {
+      m_robotDrive.ArcadeDrive (-0.45, 0.0);
     }
-    else{
+     else{
       m_robotDrive.ArcadeDrive(0.0, 0.0);
       m_shooterLeft.Set(0);
       m_shooterRight.Set(0);
